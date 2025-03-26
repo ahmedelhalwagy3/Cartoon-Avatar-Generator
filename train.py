@@ -429,7 +429,7 @@ def train(args, loader, generator, generator_source, discriminator, g_optim, d_o
                         f"{save_dir}/{str(i).zfill(6)}.png",
                         nrow=int(args.n_sample ** 0.5),
                         normalize=True,
-                        range=(-1, 1),
+                        value_range=(-1, 1),
                     )
 
             if i % 2000 == 0:

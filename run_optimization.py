@@ -41,21 +41,21 @@ def main(args):
     os.makedirs(args.results_dir, exist_ok=True)
 
     g_ema = Generator(args.stylegan_size, 512, 8)
-    g_ema.load_state_dict(torch.load(args.ckpt)["g_ema"], strict=False)
+    g_ema.load_state_dict(torch.load(args.ckpt, weights_only=False)["g_ema"], strict=False)
     g_ema.eval()
     g_ema = g_ema.cuda()
     mean_latent = g_ema.mean_latent(4096)
 
     if args.ckpt2 is not None:
         g_ema2 = Generator(args.stylegan_size, 512, 8)
-        g_ema2.load_state_dict(torch.load(args.ckpt2)["g_ema"], strict=False)
+        g_ema2.load_state_dict(torch.load(args.ckpt2, weights_only=False)["g_ema"], strict=False)
         g_ema2.eval()
         g_ema2 = g_ema2.cuda()
         mean_latent2 = g_ema2.mean_latent(4096)
         
 
     if args.latent_path:
-        latent_code_init = torch.load(args.latent_path).cuda()
+        latent_code_init = torch.load(args.latent_path, weights_only=False).cuda()
     else:
         if args.seed is not None:
             torch.manual_seed(args.seed)
@@ -115,11 +115,11 @@ def main(args):
                     torch.cat([img_gen, img_gen2], 0),
                     f"{args.results_dir}/{str(i).zfill(5)}.png",
                     normalize=True,
-                    range=(-1, 1),
+                    value_range=(-1, 1),
                     nrow=1,
                 )
             else :
-                torchvision.utils.save_image(img_gen, f"{args.results_dir}/{str(i).zfill(5)}.png", normalize=True, range=(-1, 1))
+                torchvision.utils.save_image(img_gen, f"{args.results_dir}/{str(i).zfill(5)}.png", normalize=True, value_range=(-1, 1))
 
 
     with torch.no_grad():
@@ -166,7 +166,7 @@ if __name__ == "__main__":
 
     torchvision.utils.save_image(result_image.detach().cpu(), 
                                 os.path.join(args.results_dir, "final_result.jpg"), 
-                                normalize=True, scale_each=True, range=(-1, 1))
+                                normalize=True, scale_each=True, value_range=(-1, 1))
 
 
 

@@ -191,7 +191,7 @@ if __name__ == "__main__":
     # -------------
 
     if args.e_ckpt is not None :
-        e_ckpt = torch.load(args.e_ckpt, map_location=device)
+        e_ckpt = torch.load(args.e_ckpt, map_location=device, weights_only = False)
 
         encoder = Encoder(args.size, 512).to(device)
         encoder.load_state_dict(e_ckpt['e'])

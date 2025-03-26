@@ -69,7 +69,7 @@ def make_video(args):
         grid = make_grid(torch.cat([img1, img2], 0),
                         nrow=args.n_sample,
                         normalize=True,
-                        range=(-1,1),
+                        value_range=(-1,1),
                         )
         ndarr = grid.mul(255).add_(0.5).clamp_(0, 255).permute(1, 2, 0).to('cpu', torch.uint8).numpy()
         img = pilimg.fromarray(ndarr)
@@ -123,7 +123,7 @@ def save_image(args):
         torch.cat([img1, img, img2], 0),
         f"{args.outdir}/sefa_result.png",
         normalize=True,
-        range=(-1, 1),
+        value_range=(-1, 1),
         nrow=args.n_sample,
     )
 
